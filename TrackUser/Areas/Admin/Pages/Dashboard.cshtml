@@ -1,0 +1,43 @@
+﻿@page "/admin"
+@model TrackUser.Areas.Admin.Pages.DashboardModel
+@{
+    ViewData["Title"] = "داشبورد";
+}
+
+<div class="container">
+    <div>
+        <h3 class="float-right mb-3">وضعیت کاربران (<span class="text-success">@(TrackUser.Hubs.TrackUserHub.Users.Count(u => u.Online==true))</span>)</h3>
+    </div>
+    <div class="mt-2">
+        <table class="table table-hover table-dark mt-4">
+            <thead class="text-center">
+                <tr>
+                    <th scope="col">نام کاربری</th>
+                    <th scope="col">آی پی (IP)</th>
+                    <th scope="col">مسیر مشاهده</th>
+                    <th scope="col">وضعیت</th>
+                    <th scope="col">تاریخ فعالیت</th>
+                </tr>
+            </thead>
+            <tbody id="trackUserTable">
+                @foreach (var item in TrackUser.Hubs.TrackUserHub.Users)
+                {
+                    <tr class="text-center">
+                        <th scope="row">@item.UserName</th>
+                        <td>@item.IP</td>
+                        <td class="ltr">@item.PathVisit</td>
+                        @if (item.Online)
+                        {
+                            <td><p class="bg-success p-2 rounded-pill">آنلاین</p></td>
+                        }
+                        else
+                        {
+                            <td><p class="bg-danger p-2 rounded-pill">آفلاین</p></td>
+                        }
+                        <td>@item.StartAt.ToLongShamsiDate()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
