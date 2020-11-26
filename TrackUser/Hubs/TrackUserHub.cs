@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackUser.Models;
+using TrackUser.Utilities;
 
 namespace TrackUser.Hubs
 {
@@ -14,7 +15,7 @@ namespace TrackUser.Hubs
         {
             var httpcontext = Context.GetHttpContext();
             var pathVisit = httpcontext.Request.Query["pagename"];
-            var ip = httpcontext.Connection.RemoteIpAddress.ToString();
+            var ip = GetIPAddress.GetUserIPAddress();
             if (Users.Any(u => u.IP == ip))
             {
                 Users.Find(u => u.IP == ip).Online = true;
@@ -38,7 +39,7 @@ namespace TrackUser.Hubs
         {
             var httpcontext = Context.GetHttpContext();
             var pathVisit = httpcontext.Request.Query["pagename"];
-            var ip = httpcontext.Connection.RemoteIpAddress.ToString();
+            var ip = GetIPAddress.GetUserIPAddress();
             Users.Find(u => u.IP == ip).Online = false;
             await base.OnDisconnectedAsync(exception);
         }
